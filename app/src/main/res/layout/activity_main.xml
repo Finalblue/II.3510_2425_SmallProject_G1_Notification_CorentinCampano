@@ -9,18 +9,39 @@
         android:id="@+id/notificationTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Titre de la notification" />
+        android:hint="Notification title" />
 
     <EditText
         android:id="@+id/notificationMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Message de la notification" />
+        android:hint="Notification short text" />
+
+    <EditText
+        android:id="@+id/notificationLongMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Notification long text" />
 
     <Button
         android:id="@+id/sendNotificationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Envoyer Notification" />
+        android:layout_margin="10dp"
+        android:text="Send Action Notification" />
+
+    <Button
+        android:id="@+id/sendMessageNotificationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Send Message Notification" />
+
+    <Button
+        android:id="@+id/sendProgressBarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Send Progress Bar" />
 
 </LinearLayout>
