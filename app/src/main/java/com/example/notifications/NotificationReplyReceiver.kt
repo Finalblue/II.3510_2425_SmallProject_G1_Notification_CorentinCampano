@@ -20,16 +20,12 @@ class NotificationReplyReceiver : BroadcastReceiver() {
 
             // Update the notification to indicate the reply was received
             val notificationId = 2 // Same ID used for the original notification
-            val updatedNotification = NotificationCompat.Builder(context, "COURSE_NOTIFICATIONS")
-                .setSmallIcon(R.drawable.ic_launcher_background) // Same icon
-                .setContentTitle("Reply sent") // Updated title
-                .setContentText("Your reply : $replyText was sent.") // Updated content text
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true) // Automatically remove notification when tapped
+            // TODO - Here update the notification
 
             // Show the updated notification
             val notificationManager = NotificationManagerCompat.from(context)
-            notificationManager.notify(notificationId, updatedNotification.build())
+
+            // TODO - Don't forget to send it ! (with .notify)
         }
     }
 }

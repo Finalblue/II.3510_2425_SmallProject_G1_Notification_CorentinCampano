@@ -61,79 +61,57 @@ class MainActivity : ComponentActivity() {
     }
 
 
+    // TODO - Create a Notification Channel
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Course Notifications"
-            val descriptionText = "Notifications for course reminders"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT // Here for notification importance
-            val channel = NotificationChannel("COURSE_NOTIFICATIONS", name, importance).apply {
-                description = descriptionText
-            }
-            val notificationManager: NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            // here set the notification Channel
         }
     }
 
+    // TODO - Define and add a button with the BroadcastReceiver in NotificationActionReceiver
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun sendActionNotification(title: String, message: String, longMessage : String) {
 
-        // Adding a button with an action defined in com.example.notifications.NotificationActionReceiver
         val actionIntent = Intent(this, NotificationActionReceiver::class.java)
-        val actionPendingIntent: PendingIntent = PendingIntent.getBroadcast(
-            this,
-            0,
-            actionIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        // here declare the action pending intent, using the action intent
 
         val builder = buildNotificationBase(title, message, longMessage)
-            .addAction(R.drawable.ic_launcher_background, "Action", actionPendingIntent) // Action button
+            // Here add the Action on the builder
 
         sendNotification(builder, 1)
 
     }
 
+    // TODO - declare and build a basic notification with text content, title, bigText
     private fun buildNotificationBase(title: String, message: String, longMessage : String): NotificationCompat.Builder {
         val builder = NotificationCompat.Builder(this, "COURSE_NOTIFICATIONS")
-            .setSmallIcon(R.drawable.ic_launcher_background) // icon
-            .setContentTitle(title) // Title
-            .setContentText(message) // Content
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT) // Priority
-            .setColor(Color.Blue.toArgb()) // Color
-            .setVibrate(longArrayOf(0, 500, 1000)) // Set vibration time
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(longMessage)) // text when notification is expanded
+            .setSmallIcon(R.drawable.ic_launcher_background) // Base icon
+            // here declare the rest of the notification (title, text content, bigText, color, etc ...)
 
         return builder
     }
 
+    // TODO - Send notification if permissions accorded, or request permissions
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun sendNotification(builder : NotificationCompat.Builder, id : Int){
         val notificationManager = NotificationManagerCompat.from(this)
 
         // Check permission or request it for Android 13 and above
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                notificationPermissionCode
-            )
+            // Request permissions
         } else {
-            // Send notification with reply action
-            notificationManager.notify(id , builder.build())
+            // Send notification here (with .notify function)
         }
     }
 
+
+    // TODO - Create a notification with an input and a send button with the BroadcastReceiver in NotificationReplyReceiver
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun sendReplyNotification(title: String, message: String, longMessage: String) {
 
-        // Create the RemoteInput to capture user reply
-        val replyLabel = "Enter your reply here"
-        val remoteInput: RemoteInput = RemoteInput.Builder("KEY_TEXT_REPLY")
-            .setLabel(replyLabel)
-            .build()
+        // TODO - Create the RemoteInput to capture user reply
 
-        // Create an Intent and PendingIntent for handling the reply action
+        // Intent and PendingIntent for handling the reply action
         val replyIntent = Intent(this, NotificationReplyReceiver::class.java)
         val replyPendingIntent: PendingIntent = PendingIntent.getBroadcast(
             this,
@@ -142,30 +120,25 @@ class MainActivity : ComponentActivity() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
 
-        // Create the action with RemoteInput for the reply button
-        val replyAction: NotificationCompat.Action = NotificationCompat.Action.Builder(
-            R.drawable.ic_launcher_background, // icon for the action button
-            "Reply", // label for the action
-            replyPendingIntent // pending intent to handle the reply
-        ).addRemoteInput(remoteInput).build()
+        // TODO - Create the action with RemoteInput for the reply button
 
         // Build the notification with the reply action
         val builder = buildNotificationBase(title, message, longMessage)
-            .addAction(replyAction) // add the reply action
+            // Add here the reply action !
 
-        sendNotification(builder , 2) // Send notification with permissions
+        sendNotification(builder , 2)
     }
 
+    // TODO - Update the progress bar notification with time
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun simulateProgress(title: String, message: String, longMessage: String) {
-        // Coroutine for simulate download
+        // Coroutine for simulate progress
         CoroutineScope(Dispatchers.IO).launch {
             val maxProgress = 100
             var currentProgress = 0
 
             val builder = buildNotificationBase(title, message, longMessage)
-                .setOnlyAlertOnce(true)
-                .setProgress(maxProgress, currentProgress, false) // init progress bar
+                // TODO - Here declare your progress bar
 
             sendNotification(builder, 3)
 
@@ -174,17 +147,12 @@ class MainActivity : ComponentActivity() {
                 delay(1000) // Simulate progress delay
                 currentProgress += 5
 
-                // Here update the notification progress
-                builder.setProgress(maxProgress, currentProgress, false)
-                sendNotification(builder, 3)
+                // TODO - Here update the notification progress
+
             }
 
-            // End of progress
-            builder.setContentText("Progress complete")
-                .setProgress(0, 0, false) // Delete progress bar
-                .setAutoCancel(true) // Cancel notification while clicked
+            // TODO - Here is the end of progress
 
-            sendNotification(builder, 3)
         }
     }
 
